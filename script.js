@@ -8,7 +8,10 @@ function resizeCanvas() {
 resizeCanvas();
 
 let particlesArray = [];
-const numberOfParticles = 120;
+const numberOfParticles = 60;
+let animationFrameId;
+let isPageVisible = true;
+let frameCount = 0;
 
 class Particle {
     constructor() {
@@ -30,8 +33,8 @@ class Particle {
         if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
         if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
         
-        // Add subtle opacity pulse
-        this.opacity = this.originalOpacity + Math.sin(Date.now() * 0.001 + this.x) * 0.1;
+        // Optimize opacity pulse with frame counter instead of Date.now()
+        this.opacity = this.originalOpacity + Math.sin(frameCount * 0.01 + this.x * 0.001) * 0.1;
         
         // Mouse interaction - particles attracted to cursor
         if (this.mouseX !== null && this.mouseY !== null) {
@@ -54,9 +57,9 @@ class Particle {
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
         
-        // Add glow effect
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = `rgba(0, 217, 102, ${this.opacity * 0.5})`;
+        // Reduce glow effect for performance
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = `rgba(0, 217, 102, ${this.opacity * 0.3})`;
     }
 }
 
@@ -68,14 +71,18 @@ function init() {
 }
 
 function connect() {
+    // Only check nearby particles instead of all particles (spatial optimization)
+    const maxDistance = 120;
     for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
+        for (let b = a + 1; b < particlesArray.length; b++) {
             let dx = particlesArray[a].x - particlesArray[b].x;
             let dy = particlesArray[a].y - particlesArray[b].y;
-            let distance = dx * dx + dy * dy;
+            let distSquared = dx * dx + dy * dy;
+            let maxDistSquared = maxDistance * maxDistance;
 
-            if (distance < 15000) {
-                let opacity = (1 - distance / 15000) * 0.25;
+            if (distSquared < maxDistSquared) {
+                let distance = Math.sqrt(distSquared);
+                let opacity = (1 - distance / maxDistance) * 0.25;
                 ctx.strokeStyle = `rgba(30, 58, 138, ${opacity})`;
                 ctx.lineWidth = 1;
                 ctx.beginPath();
@@ -88,7 +95,10 @@ function connect() {
 }
 
 function animate() {
+    if (!isPageVisible) return;
+    
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    frameCount++;
 
     for (let i = 0; i < particlesArray.length; i++) {
         particlesArray[i].update();
@@ -96,7 +106,7 @@ function animate() {
     }
 
     connect();
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
 }
 
 init();
@@ -120,6 +130,12 @@ canvas.addEventListener("mouseleave", () => {
         particle.mouseX = null;
         particle.mouseY = null;
     });
+});
+
+// Pause animation when page is hidden, resume when visible
+document.addEventListener("visibilitychange", () => {
+    isPageVisible = !document.hidden;
+    if (isPageVisible) animate();
 });
 
 // Modal functions
