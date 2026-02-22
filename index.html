@@ -6,9 +6,13 @@
 <title>Dragon Byte</title>
 
 <link rel="icon" href="dragonhead.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://formspree.io">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Inter:wght@300;400;600&display=swap" as="style">
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Inter:wght@300;400;600&display=optional" rel="stylesheet">
+<link rel="stylesheet" href="style.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -85,17 +89,17 @@
     <h2>News & Stories</h2>
     <div class="stories-grid">
         <article class="story-card">
-            <img src="img1.jpg" alt="Volunteer Data & Insights" class="story-image" loading="lazy" decoding="async">
+            <img src="images/img1.jpg" alt="Volunteer Data & Insights" class="story-image" loading="lazy" decoding="async">
             <h3>Volunteer Data & Insights</h3>
             <p>The VMS collected volunteer data securely and efficiently, giving NVS clear insights into skills, participation, and availability. Tracking hours and engagement is now seamless, helping NVS make smarter, faster decisions for programs that impact communities nationwide.</p>
         </article>
         <article class="story-card">
-            <img src="img2.jpg" alt="Automatic Email Integration" class="story-image" loading="lazy" decoding="async">
+            <img src="images/img2.jpg" alt="Automatic Email Integration" class="story-image" loading="lazy" decoding="async">
             <h3>Automatic Email Integration</h3>
             <p>With the VMS, we integrated automatic email notifications for NVS volunteers. From onboarding to task reminders, everyone stays informed instantly. This small automation is helping the NVS team focus more on empowering volunteers rather than chasing updates.</p>
         </article>
         <article class="story-card">
-            <img src="img3.jpg" alt="Centralized Volunteer Info" class="story-image" loading="lazy" decoding="async">
+            <img src="images/img3.jpg" alt="Centralized Volunteer Info" class="story-image" loading="lazy" decoding="async">
             <h3>Centralized Volunteer Info</h3>
             <p>This month, we deployed the VMS for the National Volunteer Service to centralize all volunteer information. Now, every volunteer's details are stored securely in one place.</p>
         </article>
@@ -139,12 +143,12 @@
             <h3>Our Co-Founders</h3>
             <div class="founders">
                 <div class="founder">
-                    <img src="leah.jpg" alt="Leahnora Kedukwakwa" class="founder-image" loading="lazy" decoding="async">
+                    <img src="images/leah.jpg" alt="Leahnora Kedukwakwa" class="founder-image" loading="lazy" decoding="async">
                     <p><strong>Leahnora Kedukwakwa</strong></p>
                     <p>Cybersecurity Analyst</p>
-                </div>
+                </div> 
                 <div class="founder">
-                    <img src="caleb.jpg" alt="Caleb Kutkue" class="founder-image" loading="lazy" decoding="async">
+                    <img src="images/caleb.jpg" alt="Caleb Kutkue" class="founder-image" loading="lazy" decoding="async">
                     <p><strong>Caleb Kutkue</strong></p>
                     <p>Lead Developer</p>
                 </div>
@@ -268,18 +272,18 @@
     <div class="legal-regulatory-window">
         <button class="close-btn" onclick="closeLegalRegulatory()">&times;</button>
         <h2>Legal & Regulatory</h2>
-        <div class="legal-regulatory-content">
+        <div class="legal-regulatory-content" id="legalContent">
             <div class="document-container">
                 <h3>Certificate Of Registration Of Business Name</h3>
-                <div class="pdf-viewer">
-                    <iframe src="Certificate Of Registration Of Business Name.pdf" type="application/pdf"></iframe>
+                <div class="pdf-viewer" data-pdf="Certificate Of Registration Of Business Name.pdf">
+                    <p style="text-align: center; color: #999; padding: 20px;">Loading PDF...</p>
                 </div>
             </div>
 
             <div class="document-container">
                 <h3>Certificate of Good Standing Business Names - Long Form</h3>
-                <div class="pdf-viewer">
-                    <iframe src="Certificate of Good Standing Business Names - Long Form.pdf" type="application/pdf"></iframe>
+                <div class="pdf-viewer" data-pdf="Certificate of Good Standing Business Names - Long Form.pdf">
+                    <p style="text-align: center; color: #999; padding: 20px;">Loading PDF...</p>
                 </div>
             </div>
         </div>
@@ -370,6 +374,51 @@
     © 2026 Dragon Byte. Built to Lead.
 </footer>
 
-<script src="script.js"></script>
+<script src="script.min.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').then(() => {
+        console.log('Service Worker registered');
+    });
+}
+
+// Lazy load PDFs on modal open
+document.getElementById('legal-regulatory-modal').addEventListener('click', function(e) {
+    if (e.target === this && this.classList.contains(':target')) {
+        loadPDFs();
+    }
+});
+
+function loadPDFs() {
+    const pdfViewers = document.querySelectorAll('.pdf-viewer[data-pdf]');
+    pdfViewers.forEach(viewer => {
+        if (!viewer.querySelector('iframe')) {
+            const pdfName = viewer.getAttribute('data-pdf');
+            const iframe = document.createElement('iframe');
+            iframe.src = pdfName;
+            iframe.type = 'application/pdf';
+            viewer.innerHTML = '';
+            viewer.appendChild(iframe);
+        }
+    });
+}
+
+// Load PDFs when modal is visible
+const legalModal = document.getElementById('legal-regulatory-modal');
+const observer = new MutationObserver(() => {
+    if (window.location.hash === '#legal-regulatory-modal') {
+        loadPDFs();
+    }
+});
+
+observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+
+// Also load on direct hash change
+window.addEventListener('hashchange', () => {
+    if (window.location.hash === '#legal-regulatory-modal') {
+        setTimeout(loadPDFs, 100);
+    }
+});
+</script>
 </body>
 </html>
