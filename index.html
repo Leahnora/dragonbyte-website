@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dragon Byte</title>
+
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Inter:wght@300;400;600&display=swap" as="style">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Inter:wght@300;400;600&display=optional" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="background-blur"></div>
+
+<header>
+    <div class="logo-container">
+        <img src="dragonhead.svg" alt="Dragon Byte Logo" class="logo-icon">
+        <div class="logo">DRAGON BYTE</div>
+    </div>
+    <nav>
+        <a href="#services-modal">Services</a>
+        <a href="#about-modal">About Us</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <canvas id="bg"></canvas>
+    <h1>Building the Infrastructure of Tomorrow One Byte at a Time</h1>
+    <p>To empower PNG organizations through secure, intuitive, and high-performance technology that drives sustainable growth.</p>
+    <button class="btn" id="transformBtn" onclick="openTransformModal()">Initiate Transformation</button>
+</section>
+
+<!-- Transformation Modal -->
+<div id="transformationModal" class="transformation-modal-overlay">
+    <div class="transformation-modal">
+        <button class="modal-close" onclick="closeTransformModal()">&times;</button>
+        <div class="modal-header">
+            <h2>Begin Your Digital Transformation</h2>
+            <p>Fill out this form and our team will reach out to discuss your organization's needs.</p>
+        </div>
+        <form id="transformationForm" class="transformation-form" method="POST" action="https://formspree.io/f/xqedyjen">
+            <div class="form-group">
+                <label for="fullName">Full Name <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" required placeholder="Your full name">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="your@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" required placeholder="+67572345678">
+            </div>
+
+            <div class="form-group">
+                <label for="organization">Organization Name <span class="required">*</span></label>
+                <input type="text" id="organization" name="organization" required placeholder="Your organization">
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message <span class="required">*</span></label>
+                <textarea id="message" name="message" rows="5" required placeholder="Tell us about your transformation goals..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+        <div id="successMessage" class="success-message" style="display: none;">
+            <div class="success-content">
+                <div class="success-icon">✓</div>
+                <h3>Success!</h3>
+                <p>Thank you for your submission. Our team will contact you soon to discuss your digital transformation journey.</p>
+                <button class="close-success-btn" onclick="closeTransformModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="news-stories">
+    <h2>News & Stories</h2>
+    <div class="stories-grid">
+        <article class="story-card">
+            <img src="img1.jpg" alt="Volunteer Data & Insights" class="story-image">
+            <h3>Volunteer Data & Insights</h3>
+            <p>The VMS collected volunteer data securely and efficiently, giving NVS clear insights into skills, participation, and availability. Tracking hours and engagement is now seamless, helping NVS make smarter, faster decisions for programs that impact communities nationwide.</p>
+        </article>
+        <article class="story-card">
+            <img src="img2.jpg" alt="Automatic Email Integration" class="story-image">
+            <h3>Automatic Email Integration</h3>
+            <p>With the VMS, we integrated automatic email notifications for NVS volunteers. From onboarding to task reminders, everyone stays informed instantly. This small automation is helping the NVS team focus more on empowering volunteers rather than chasing updates.</p>
+        </article>
+        <article class="story-card">
+            <img src="img3.jpg" alt="Centralized Volunteer Info" class="story-image">
+            <h3>Centralized Volunteer Info</h3>
+            <p>This month, we deployed the VMS for the National Volunteer Service to centralize all volunteer information. Now, every volunteer's details are stored securely in one place.</p>
+        </article>
+    </div>
+</section>
+
+<div id="services-modal" class="services-overlay">
+    <div class="services-window">
+        <button class="close-btn" onclick="closeServices()">&times;</button>
+        <h2>Core Capabilities</h2>
+        <div class="services">
+            <div class="card">
+                <h3>Systems Development & Integration</h3>
+                <p>Design, develop, and implement custom software solutions. Expertise in creating enterprise systems, management portals, and mobile-responsive platforms. Integration with existing IT infrastructure for seamless workflow automation.</p>
+            </div>
+            <div class="card">
+                <h3>Website Design & Development</h3>
+                <p>Build modern, responsive, and user-friendly websites. Includes content management systems (CMS), e-commerce platforms, and web applications. Focus on scalability, performance, and accessibility.</p>
+            </div>
+            <div class="card">
+                <h3>Hosting & IT Support</h3>
+                <p>Secure, reliable hosting solutions tailored to client needs. Full IT support services including system maintenance, troubleshooting, and updates. Monitoring and management to ensure uptime and continuity.</p>
+            </div>
+            <div class="card">
+                <h3>Cybersecurity Services</h3>
+                <p>Protect systems and data with comprehensive security solutions. Services include vulnerability assessments, penetration testing, and security auditing.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="about-modal" class="about-overlay">
+    <div class="about-window">
+        <button class="close-btn" onclick="closeAbout()">&times;</button>
+        <h2>About Dragon Byte</h2>
+        <div class="about-content">
+            <p>Dragon Byte is a digital transformation company dedicated to building intelligent training systems, secure digital ecosystems, and workforce capability that eliminates outdated processes.</p>
+            <p>We specialize in transforming organizations from paper-based workflows into structured digital systems, delivering measurable skill growth and digital discipline across enterprises.</p>
+            <p>Dragon Byte is proudly a 100% PNG-owned company, founded by two ambitious undergraduates with a vision to revolutionize digital transformation across the Pacific region. We develop systems, websites, and hosting services while providing comprehensive support to help organizations thrive in the digital age.</p>
+            
+            <h3>Our Co-Founders</h3>
+            <div class="founders">
+                <div class="founder">
+                    <img src="leah.jpg" alt="Leahnora Kedukwakwa" class="founder-image">
+                    <p><strong>Leahnora Kedukwakwa</strong></p>
+                    <p>Cybersecurity Analyst</p>
+                </div>
+                <div class="founder">
+                    <img src="caleb.jpg" alt="Caleb Kutkue" class="founder-image">
+                    <p><strong>Caleb Kutkue</strong></p>
+                    <p>Lead Developer</p>
+                </div>
+            </div>
+
+            <h3>Resources</h3>
+            <div class="resource-buttons">
+                <a href="#business-profile-modal" class="resource-btn">Business Profile</a>
+                <a href="#capability-statement-modal" class="resource-btn">Capability Statement</a>
+                <a href="#technical-capabilities-modal" class="resource-btn">Technical Capabilities</a>
+                <a href="#portfolio-modal" class="resource-btn">Portfolio</a>
+                <a href="#legal-regulatory-modal" class="resource-btn">Legal & Regulatory</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="capability-statement-modal" class="capability-statement-overlay">
+    <div class="capability-statement-window">
+        <button class="close-btn" onclick="closeCapabilityStatement()">&times;</button>
+        <h2>Capability Statement: Dragon Byte</h2>
+        <div class="capability-statement-content">
+            <h3>Empowering Papua New Guinea through Secure, Mobile-First Digital Transformation</h3>
+            
+            <h4>Company Overview</h4>
+            <p>Dragon Byte is a 100% Papua New Guinean-owned IT consultancy founded in 2025. We specialize in modernizing organizations through DevSecOps and Laravel-based development. We bridge the gap between global security standards and the local PNG context, delivering software that is high-performing, secure, and user-friendly.</p>
+            
+            <h4>Core Competencies</h4>
+            <ul class="profile-list">
+                <li><strong>DevSecOps & Secure Software Development:</strong> Integrating security into every phase of the development lifecycle using the Laravel framework.</li>
+                <li><strong>Mobile-First Solutions:</strong> Engineering lightweight, high-performance applications optimized for PNG's mobile network constraints.</li>
+                <li><strong>Human-Centric UI/UX Design:</strong> Creating "friendly" and intuitive interfaces that ensure high adoption rates for users of all technical levels.</li>
+                <li><strong>IT Strategy & Digital Transformation:</strong> Helping NGOs and government agencies transition from manual processes to secure digital workflows.</li>
+                <li><strong>Systems Integration:</strong> Connecting disparate tools into a unified, secure ecosystem.</li>
+            </ul>
+
+            <h4>Key Differentiators</h4>
+            <ul class="profile-list">
+                <li><strong>The DevSecOps Edge:</strong> Unlike firms that treat security as an afterthought, we use automated security testing and encrypted-by-default code to protect sensitive data.</li>
+                <li><strong>Laravel Specialization:</strong> We utilize the world's leading PHP framework to provide enterprise-grade stability without the high licensing costs of proprietary software.</li>
+                <li><strong>Indigenous Insight:</strong> Founded by digital natives, we understand the unique challenges of connectivity and digital literacy across PNG's provinces.</li>
+                <li><strong>Agile & Cost-Effective:</strong> As a modern, streamlined consultancy, we deliver high-end results faster and with more transparency than legacy IT providers.</li>
+            </ul>
+
+            <h4>Past Performance / Representative Project</h4>
+            <p>As part of their undergraduate studies, the co-owners of Dragon Byte completed multiple academic and applied technology projects focused on secure systems development, database design, web application deployment, and user-centered interface design.</p>
+            <p>These projects involved practical implementation of modern development methodologies, including secure coding principles, system integration, and mobile-responsive application development.</p>
+            <p>The experience gained through these undergraduate initiatives forms the technical foundation of Dragon Byte's current DevSecOps-oriented IT consultancy approach.</p>
+
+            <h4>Corporate Data</h4>
+            <ul class="profile-list">
+                <li><strong>Entity Name:</strong> Dragon Byte</li>
+                <li><strong>Year Established:</strong> 2026</li>
+                <li><strong>Ownership:</strong> 100% PNG Citizen Owned</li>
+                <li><strong>Primary Tech Stack:</strong> Laravel, PHP, MySQL, React/Livewire</li>
+                <li><strong>Industry Focus:</strong> NGOs, Government, Corporate, SME, Community Based Organizations, Non-Profits</li>
+            </ul>
+
+            <h4>Contact Information</h4>
+            <ul class="profile-list">
+                <li><strong>Primary Contact:</strong> Leahnora Kedukwakwa, Caleb Kutkue</li>
+                <li><strong>Email:</strong> info@dragonbyte.ltd</li>
+                <li><strong>Phone:</strong> +675 82420918 / +675 7787 7589</li>
+                <li><strong>Website:</strong> https://dragonbyte.ltd</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="technical-capabilities-modal" class="technical-capabilities-overlay">
+    <div class="technical-capabilities-window">
+        <button class="close-btn" onclick="closeTechnicalCapabilities()">&times;</button>
+        <h2>Technical Capabilities: The Laravel Powerhouse</h2>
+        <div class="technical-capabilities-content">
+            <h3>Built-in DevSecOps Excellence</h3>
+            <p>At Dragon Byte, we use Laravel as our primary framework because it is "secure by design." In the Papua New Guinea market, where data privacy is becoming a critical concern for NGOs and government bodies, Laravel provides enterprise-grade protection right out of the box.</p>
+            
+            <ul class="profile-list">
+                <li><strong>Integrated Defense:</strong> Laravel automatically shields your systems against the most common web threats, such as SQL Injection and Cross-Site Scripting (XSS). This means your client data is protected without needing expensive, bulky third-party security add-ons.</li>
+                <li><strong>Military-Grade Encryption:</strong> Every piece of sensitive information—from passwords to personal IDs—is hashed using industry-leading algorithms like Bcrypt and Argon2.</li>
+                <li><strong>Secure Access Control:</strong> We implement Two-Factor Authentication (2FA) and secure session management as standard features, ensuring that only authorized personnel can access sensitive records.</li>
+            </ul>
+
+            <h3>Mobile-First Performance</h3>
+            <p>In PNG, mobile accessibility is the priority. We leverage Laravel's efficient architecture to build backends that are specifically optimized for the local environment.</p>
+            
+            <ul class="profile-list">
+                <li><strong>Low-Bandwidth Efficiency:</strong> We use an API-first approach to ensure that only the most essential data is transmitted. This allows your applications to load quickly and reliably, even on 3G connections in remote provinces.</li>
+                <li><strong>High-Speed Response:</strong> By utilizing Laravel's advanced caching systems, we reduce server strain, making the user experience feel "snappy" and responsive on budget-friendly smartphones.</li>
+                <li><strong>Real-Time Data:</strong> Whether it is a logistics tracker or a live project update for a non-profit, we provide real-time information flow without requiring constant page refreshes, saving users' mobile data.</li>
+            </ul>
+
+            <h3>Friendly UI/UX: The "Clean Code" Advantage</h3>
+            <p>Because Laravel follows a structured Model-View-Controller (MVC) architecture, we can keep the complex "brain" of the application separate from the "face" (the UI).</p>
+            
+            <ul class="profile-list">
+                <li><strong>Seamless Interaction:</strong> We pair Laravel with modern tools like Livewire or Tailwind CSS to create smooth, interactive interfaces. These feel like high-end mobile apps but run efficiently in any web browser.</li>
+                <li><strong>Consistency & Clarity:</strong> Our use of the Blade templating engine ensures that every button, font, and menu is consistent across the entire platform. This makes the software friendly and intuitive for users, regardless of their technical background.</li>
+            </ul>
+
+            <h3>Why Laravel is the Strategic Choice for PNG</h3>
+            <p>By choosing a Laravel-based solution from Dragon Byte, you avoid the high licensing fees of proprietary software. As an open-source framework with global support, it offers unmatched scalability: your system can start as a small internal tool and grow to serve the entire nation.</p>
+            <p>Furthermore, Laravel's clean, standardized structure means your investment is future-proof. The code is easy to maintain and update, ensuring that your digital infrastructure remains secure and modern for years to come.</p>
+        </div>
+    </div>
+</div>
+
+<div id="portfolio-modal" class="portfolio-overlay">
+    <div class="portfolio-window">
+        <button class="close-btn" onclick="closePortfolio()">&times;</button>
+        <h2>Portfolio</h2>
+        <div class="portfolio-content">
+            <p class="coming-soon-message">Coming Soon</p>
+            <p>Our portfolio is currently being prepared. We're showcasing our latest projects and case studies to demonstrate our expertise in DevSecOps, digital transformation, and mobile-first solutions for Papua New Guinea.</p>
+            <p>Check back soon to see our impressive portfolio of work!</p>
+        </div>
+    </div>
+</div>
+
+<div id="legal-regulatory-modal" class="legal-regulatory-overlay">
+    <div class="legal-regulatory-window">
+        <button class="close-btn" onclick="closeLegalRegulatory()">&times;</button>
+        <h2>Legal & Regulatory</h2>
+        <div class="legal-regulatory-content">
+            <div class="document-container">
+                <h3>Certificate Of Registration Of Business Name</h3>
+                <div class="pdf-viewer">
+                    <iframe src="Certificate Of Registration Of Business Name.pdf" type="application/pdf"></iframe>
+                </div>
+            </div>
+
+            <div class="document-container">
+                <h3>Certificate of Good Standing Business Names - Long Form</h3>
+                <div class="pdf-viewer">
+                    <iframe src="Certificate of Good Standing Business Names - Long Form.pdf" type="application/pdf"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="business-profile-modal" class="business-profile-overlay">
+    <div class="business-profile-window">
+        <button class="close-btn" onclick="closeBusinessProfile()">&times;</button>
+        <h2>Business Profile: Dragon Byte </h2>
+        <div class="business-profile-content">
+            <h3>1. Company Overview</h3>
+            <p>Dragon Byte is a premier, indigenous IT consultancy based in Papua New Guinea. Founded in 2026 by two visionary tech entrepreneurs during their undergraduate years, the firm represents the next generation of PNG's digital leadership. We bridge the gap between complex global technology standards and the unique operational landscape of the Pacific.</p>
+            
+            <div class="profile-section">
+                <h4>Mission</h4>
+                <p>To empower PNG organizations through secure, intuitive, and high-performance technology that drives sustainable growth.</p>
+            </div>
+            
+            <div class="profile-section">
+                <h4>Vision</h4>
+                <p>To be the leading catalyst for digital sovereignty in Papua New Guinea, recognized for excellence in DevSecOps and user-centric design.</p>
+            </div>
+            
+            <div class="profile-section">
+                <h4>Core Values</h4>
+                <ul class="profile-list">
+                    <li><strong>Security by Design:</strong> Integrating protection into every line of code.</li>
+                    <li><strong>Innovation:</strong> Leveraging agile, modern frameworks.</li>
+                    <li><strong>Local Impact:</strong> Developing solutions that work for PNG's people and infrastructure.</li>
+                    <li><strong>Inclusivity:</strong> Ensuring technology is accessible and intuitive for all users.</li>
+                </ul>
+            </div>
+
+            <h3>2. Services Offered</h3>
+            <p>Dragon Byte provides a comprehensive suite of IT consultancy services designed for the modern era.</p>
+            <ul class="profile-list">
+                <li><strong>DevSecOps & Secure Software Development:</strong> We don't just build software; we build secure pipelines. By integrating security at every stage of the development lifecycle, we ensure your data is protected from day one.</li>
+                <li><strong>IT Strategy & Digital Transformation:</strong> Guiding organizations through the transition from legacy systems to streamlined, digital-first workflows.</li>
+                <li><strong>Friendly UI/UX Design:</strong> We specialize in "human-centric" interfaces. Our designs are intuitive, culturally relevant, and require minimal training for end-users.</li>
+                <li><strong>Mobile-Optimized Solutions:</strong> Recognizing that PNG is a mobile-first nation, we ensure every platform is responsive and performs seamlessly on low-bandwidth connections.</li>
+                <li><strong>System Integration & IT Support:</strong> Unifying disparate software tools into a single, cohesive ecosystem backed by reliable local support.</li>
+                <li><strong>IT Training:</strong> Building internal capacity through hands-on workshops in cybersecurity and digital literacy.</li>
+            </ul>
+
+            <h3>3. Industry Context in Papua New Guinea</h3>
+            <p>In a rapidly evolving digital economy, PNG's Government, NGOs, and Corporate sectors face unique challenges—from cybersecurity threats to varied levels of digital literacy and fluctuating internet connectivity.</p>
+            <p>Dragon Byte understands that a "one-size-fits-all" Western approach often fails here. We focus on mobile-accessible and bandwidth-efficient solutions, ensuring that essential services reach users in both urban centers and remote provinces. For non-profits and government agencies, our focus on DevSecOps ensures that sensitive citizen and donor data remains sovereign and secure.</p>
+
+            <h3>4. Unique Selling Points</h3>
+            <ul class="profile-list">
+                <li><strong>The DevSecOps Edge:</strong> Unlike traditional firms that treat security as an afterthought, we bake it into our development DNA, reducing long-term risk and cost.</li>
+                <li><strong>Mobile-First Philosophy:</strong> We design for the device in everyone's pocket, optimizing for performance in the PNG context.</li>
+                <li><strong>Agility & Fresh Perspectives:</strong> As a firm founded by digital natives, we are unencumbered by "the way things used to be." We use the latest, most efficient tech stacks to deliver faster results.</li>
+                <li><strong>Local Roots, Global Standards:</strong> We combine deep local cultural insights with international best practices in software engineering and UI/UX.</li>
+            </ul>
+
+            <h3>5. Client Benefits</h3>
+            <ul class="profile-list">
+                <li><strong>Reduced Vulnerability:</strong> Minimize the risk of data breaches through our rigorous security protocols.</li>
+                <li><strong>Increased Adoption:</strong> User-friendly interfaces mean your staff and customers will actually want to use your systems.</li>
+                <li><strong>Operational Efficiency:</strong> Automated, integrated workflows save time and reduce manual errors.</li>
+                <li><strong>Future-Proofing:</strong> Scalable solutions that grow alongside your organization and adapt to emerging tech trends.</li>
+            </ul>
+
+            <h3>6. Experience & Past Work</h3>
+            <p>As part of their undergraduate studies, the co-owners of Dragon Byte completed multiple academic and applied technology projects focused on secure systems development, database design, web application deployment, and user-centered interface design.</p>
+            <p>These projects involved practical implementation of modern development methodologies, including secure coding principles, system integration, and mobile-responsive application development.</p>
+            <p>The experience gained through these undergraduate initiatives forms the technical foundation of Dragon Byte's current DevSecOps-oriented IT consultancy approach.</p>
+
+            <h3>7. Contact Information & Location</h3>
+            <p>Dragon Byte is ready to partner with you to secure and simplify your digital future.</p>
+            <ul class="profile-list">
+                <li><strong>Email:</strong> info@dragonbyte.ltd</li>
+                <li><strong>Website:</strong> https://dragonbyte.ltd</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<section id="contact">
+    <h2>Engage Dragon Byte</h2>
+    <p>Email: info@dragonbyte.ltd</p>
+    <p>Phone: +675 8242 0918</p>
+</section>
+
+<footer>
+    © 2026 Dragon Byte. Built to Lead.
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
