@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dragonbyte-v2';
+const CACHE_NAME = 'dragonbyte-v3';
 const urlsToCache = [
   '/',
   '/index.html',
