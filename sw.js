@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dragonbyte-v1';
+const CACHE_NAME = 'dragonbyte-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -13,6 +13,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
@@ -22,20 +23,40 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  const isDocumentRequest = request.mode === 'navigate' || (request.headers.get('accept') || '').includes('text/html');
+
+  if (isDocumentRequest) {
+    event.respondWith(
+      fetch(request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(request).then((cached) => cached || caches.match('/index.html')))
+    );
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request)
+    caches.match(request)
       .then((response) => {
         if (response) {
           return response;
         }
-        return fetch(event.request).then((response) => {
+        return fetch(request).then((response) => {
           if (!response || response.status !== 200 || response.type === 'error') {
             return response;
           }
           const responseToCache = response.clone();
           caches.open(CACHE_NAME)
             .then((cache) => {
-              cache.put(event.request, responseToCache);
+              cache.put(request, responseToCache);
             });
           return response;
         });
@@ -56,6 +77,6 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
