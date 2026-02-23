@@ -13,9 +13,11 @@
 <link rel="preload" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Inter:wght@300;400;600&display=swap" as="style">
 <link rel="stylesheet" href="style.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 </head>
 
-<body>
+<body x-data="dragonByteApp()">
 
 <div class="background-blur"></div>
 
@@ -25,28 +27,28 @@
         <div class="logo">DRAGON BYTE</div>
     </div>
     <nav>
-        <a href="#" onclick="openServices(); return false;">Services</a>
-        <a href="#" onclick="openAbout(); return false;">About Us</a>
+            <a href="#" @click.prevent="openModal('services')">Services</a>
+            <a href="#" @click.prevent="openModal('about')">About Us</a>
         <a href="#contact">Contact</a>
     </nav>
 </header>
 
 <section class="hero">
-    <canvas id="bg"></canvas>
+    <div id="bg"></div>
     <h1>Building the Infrastructure of Tomorrow One Byte at a Time</h1>
     <p>To empower PNG organizations through secure, intuitive, and high-performance technology that drives sustainable growth.</p>
-    <button class="btn" id="transformBtn" onclick="openTransformModal()">Initiate Transformation</button>
+    <button class="btn" id="transformBtn" @click="openModal('transformation')">Initiate Transformation</button>
 </section>
 
 <!-- Transformation Modal -->
-<div id="transformationModal" class="transformation-modal-overlay">
+<div id="transformationModal" class="transformation-modal-overlay" :class="{ 'active': modals.transformation }" @click.self="closeModal('transformation')">
     <div class="transformation-modal">
-        <button class="modal-close" onclick="closeTransformModal()">&times;</button>
+        <button class="modal-close" @click="closeModal('transformation')">&times;</button>
         <div class="modal-header">
             <h2>Begin Your Digital Transformation</h2>
             <p>Fill out this form and our team will reach out to discuss your organization's needs.</p>
         </div>
-        <form id="transformationForm" class="transformation-form" method="POST" action="https://formspree.io/f/xqedyjen">
+        <form x-show="!form.submitted" id="transformationForm" class="transformation-form" method="POST" action="https://formspree.io/f/xqedyjen" @submit.prevent="submitTransformationForm($event)">
             <div class="form-group">
                 <label for="fullName">Full Name <span class="required">*</span></label>
                 <input type="text" id="fullName" name="fullName" required placeholder="Your full name">
@@ -72,14 +74,14 @@
                 <textarea id="message" name="message" rows="5" required placeholder="Tell us about your transformation goals..."></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">Submit</button>
+            <button type="submit" class="submit-btn" :disabled="form.isSubmitting" x-text="form.isSubmitting ? 'Submitting...' : 'Submit'"></button>
         </form>
-        <div id="successMessage" class="success-message" style="display: none;">
+        <div id="successMessage" class="success-message" x-show="form.submitted">
             <div class="success-content">
                 <div class="success-icon">✓</div>
                 <h3>Success!</h3>
                 <p>Thank you for your submission. Our team will contact you soon to discuss your digital transformation journey.</p>
-                <button class="close-success-btn" onclick="closeTransformModal()">Close</button>
+                <button class="close-success-btn" @click="closeModal('transformation')">Close</button>
             </div>
         </div>
     </div>
@@ -106,9 +108,9 @@
     </div>
 </section>
 
-<div id="services-modal" class="services-overlay" onclick="if(event.target === this) closeServices()">
+<div id="services-modal" class="services-overlay" :class="{ 'active': modals.services }" @click.self="closeModal('services')">
     <div class="services-window">
-        <button class="close-btn" onclick="closeServices()">&times;</button>
+        <button class="close-btn" @click="closeModal('services')">&times;</button>
         <h2>Core Capabilities</h2>
         <div class="services">
             <div class="card">
@@ -131,9 +133,9 @@
     </div>
 </div>
 
-<div id="about-modal" class="about-overlay" onclick="if(event.target === this) closeAbout()">
+<div id="about-modal" class="about-overlay" :class="{ 'active': modals.about }" @click.self="closeModal('about')">
     <div class="about-window">
-        <button class="close-btn" onclick="closeAbout()">&times;</button>
+        <button class="close-btn" @click="closeModal('about')">&times;</button>
         <h2>About Dragon Byte</h2>
         <div class="about-content">
             <p>Dragon Byte is a digital transformation company dedicated to building intelligent enterprise systems, secure digital ecosystems, and workforce capability that eliminates outdated processes.</p>
@@ -156,19 +158,19 @@
 
             <h3>Resources</h3>
             <div class="resource-buttons">
-                <a href="#" onclick="openBusinessProfile(); return false;" class="resource-btn">Business Profile</a>
-                <a href="#" onclick="openCapabilityStatement(); return false;" class="resource-btn">Capability Statement</a>
-                <a href="#" onclick="openTechnicalCapabilities(); return false;" class="resource-btn">Technical Capabilities</a>
-                <a href="#" onclick="openPortfolio(); return false;" class="resource-btn">Portfolio</a>
-                <a href="#" onclick="openLegalRegulatory(); return false;" class="resource-btn">Legal & Regulatory</a>
+                <a href="#" @click.prevent="openModal('businessProfile')" class="resource-btn">Business Profile</a>
+                <a href="#" @click.prevent="openModal('capabilityStatement')" class="resource-btn">Capability Statement</a>
+                <a href="#" @click.prevent="openModal('technicalCapabilities')" class="resource-btn">Technical Capabilities</a>
+                <a href="#" @click.prevent="openModal('portfolio')" class="resource-btn">Portfolio</a>
+                <a href="#" @click.prevent="openModal('legalRegulatory')" class="resource-btn">Legal & Regulatory</a>
             </div>
         </div>
     </div>
 </div>
 
-<div id="capability-statement-modal" class="capability-statement-overlay" onclick="if(event.target === this) closeCapabilityStatement()">
+<div id="capability-statement-modal" class="capability-statement-overlay" :class="{ 'active': modals.capabilityStatement }" @click.self="closeModal('capabilityStatement')">
     <div class="capability-statement-window">
-        <button class="close-btn" onclick="closeCapabilityStatement()">&times;</button>
+        <button class="close-btn" @click="closeModal('capabilityStatement')">&times;</button>
         <h2>Capability Statement: Dragon Byte</h2>
         <div class="capability-statement-content">
             <h3>Empowering Papua New Guinea through Secure, Mobile-First Digital Transformation</h3>
@@ -218,9 +220,9 @@
     </div>
 </div>
 
-<div id="technical-capabilities-modal" class="technical-capabilities-overlay" onclick="if(event.target === this) closeTechnicalCapabilities()">
+<div id="technical-capabilities-modal" class="technical-capabilities-overlay" :class="{ 'active': modals.technicalCapabilities }" @click.self="closeModal('technicalCapabilities')">
     <div class="technical-capabilities-window">
-        <button class="close-btn" onclick="closeTechnicalCapabilities()">&times;</button>
+        <button class="close-btn" @click="closeModal('technicalCapabilities')">&times;</button>
         <h2>Technical Capabilities: The Laravel Powerhouse</h2>
         <div class="technical-capabilities-content">
             <h3>Built-in DevSecOps Excellence</h3>
@@ -256,9 +258,9 @@
     </div>
 </div>
 
-<div id="portfolio-modal" class="portfolio-overlay" onclick="if(event.target === this) closePortfolio()">
+<div id="portfolio-modal" class="portfolio-overlay" :class="{ 'active': modals.portfolio }" @click.self="closeModal('portfolio')">
     <div class="portfolio-window">
-        <button class="close-btn" onclick="closePortfolio()">&times;</button>
+        <button class="close-btn" @click="closeModal('portfolio')">&times;</button>
         <h2>Portfolio</h2>
         <div class="portfolio-content">
             <p class="coming-soon-message">Coming Soon</p>
@@ -268,9 +270,9 @@
     </div>
 </div>
 
-<div id="legal-regulatory-modal" class="legal-regulatory-overlay" onclick="if(event.target === this) closeLegalRegulatory()">
+<div id="legal-regulatory-modal" class="legal-regulatory-overlay" :class="{ 'active': modals.legalRegulatory }" @click.self="closeModal('legalRegulatory')">
     <div class="legal-regulatory-window">
-        <button class="close-btn" onclick="closeLegalRegulatory()">&times;</button>
+        <button class="close-btn" @click="closeModal('legalRegulatory')">&times;</button>
         <h2>Legal & Regulatory</h2>
         <div class="legal-regulatory-content" id="legalContent">
             <div class="document-container">
@@ -290,9 +292,9 @@
     </div>
 </div>
 
-<div id="business-profile-modal" class="business-profile-overlay" onclick="if(event.target === this) closeBusinessProfile()">
+<div id="business-profile-modal" class="business-profile-overlay" :class="{ 'active': modals.businessProfile }" @click.self="closeModal('businessProfile')">
     <div class="business-profile-window">
-        <button class="close-btn" onclick="closeBusinessProfile()">&times;</button>
+        <button class="close-btn" @click="closeModal('businessProfile')">&times;</button>
         <h2>Business Profile: Dragon Byte </h2>
         <div class="business-profile-content">
             <h3>1. Company Overview</h3>
@@ -376,11 +378,20 @@
 
 <script src="script.min.js"></script>
 <style>
-.services-overlay.active, .about-overlay.active, .business-profile-overlay.active, 
-.capability-statement-overlay.active, .technical-capabilities-overlay.active, 
+.services-overlay.active, .about-overlay.active, .business-profile-overlay.active,
+.capability-statement-overlay.active, .technical-capabilities-overlay.active,
 .portfolio-overlay.active, .legal-regulatory-overlay.active {
     display: flex !important;
     opacity: 1 !important;
+}
+#bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
 }
 </style>
 <script>
@@ -390,25 +401,68 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Load PDFs when modal opens
-function loadPDFs() {
-    const pdfViewers = document.querySelectorAll('.pdf-viewer[data-pdf]');
-    pdfViewers.forEach(viewer => {
-        if (!viewer.querySelector('iframe')) {
-            const pdfName = viewer.getAttribute('data-pdf');
-            const iframe = document.createElement('iframe');
-            iframe.src = pdfName;
-            iframe.type = 'application/pdf';
-            viewer.innerHTML = '';
-            viewer.appendChild(iframe);
-        }
-    });
-}
+document.addEventListener('alpine:init', () => {
+    Alpine.data('dragonByteApp', () => ({
+        modals: {
+            transformation: false,
+            services: false,
+            about: false,
+            businessProfile: false,
+            capabilityStatement: false,
+            technicalCapabilities: false,
+            portfolio: false,
+            legalRegulatory: false
+        },
+        form: {
+            isSubmitting: false,
+            submitted: false
+        },
+        openModal(name) {
+            if (this.modals[name] !== undefined) {
+                this.modals[name] = true;
+                document.body.style.overflow = 'hidden';
+            }
+        },
+        closeModal(name) {
+            if (this.modals[name] !== undefined) {
+                this.modals[name] = false;
+            }
+            this.form.isSubmitting = false;
+            this.form.submitted = false;
 
-document.getElementById('legal-regulatory-modal').addEventListener('click', function(e) {
-    if (e.target === this && this.classList.contains('active')) {
-        loadPDFs();
-    }
+            const formElement = document.getElementById('transformationForm');
+            if (name === 'transformation' && formElement) {
+                formElement.reset();
+            }
+
+            const hasOpenModal = Object.values(this.modals).some(Boolean);
+            if (!hasOpenModal) {
+                document.body.style.overflow = 'auto';
+            }
+        },
+        async submitTransformationForm(event) {
+            const formElement = event.target;
+            this.form.isSubmitting = true;
+
+            try {
+                const response = await fetch(formElement.action, {
+                    method: 'POST',
+                    body: new FormData(formElement),
+                    headers: { Accept: 'application/json' }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Submission failed');
+                }
+
+                this.form.submitted = true;
+            } catch (error) {
+                alert('There was a problem submitting your form. Please try again.');
+            } finally {
+                this.form.isSubmitting = false;
+            }
+        }
+    }));
 });
 </script>
 </body>
