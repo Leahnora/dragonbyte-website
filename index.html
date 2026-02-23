@@ -25,8 +25,8 @@
         <div class="logo">DRAGON BYTE</div>
     </div>
     <nav>
-        <a href="#services-modal">Services</a>
-        <a href="#about-modal">About Us</a>
+        <a href="#" onclick="openServices(); return false;">Services</a>
+        <a href="#" onclick="openAbout(); return false;">About Us</a>
         <a href="#contact">Contact</a>
     </nav>
 </header>
@@ -106,7 +106,7 @@
     </div>
 </section>
 
-<div id="services-modal" class="services-overlay">
+<div id="services-modal" class="services-overlay" onclick="if(event.target === this) closeServices()">
     <div class="services-window">
         <button class="close-btn" onclick="closeServices()">&times;</button>
         <h2>Core Capabilities</h2>
@@ -131,7 +131,7 @@
     </div>
 </div>
 
-<div id="about-modal" class="about-overlay">
+<div id="about-modal" class="about-overlay" onclick="if(event.target === this) closeAbout()">
     <div class="about-window">
         <button class="close-btn" onclick="closeAbout()">&times;</button>
         <h2>About Dragon Byte</h2>
@@ -156,17 +156,17 @@
 
             <h3>Resources</h3>
             <div class="resource-buttons">
-                <a href="#business-profile-modal" class="resource-btn">Business Profile</a>
-                <a href="#capability-statement-modal" class="resource-btn">Capability Statement</a>
-                <a href="#technical-capabilities-modal" class="resource-btn">Technical Capabilities</a>
-                <a href="#portfolio-modal" class="resource-btn">Portfolio</a>
-                <a href="#legal-regulatory-modal" class="resource-btn">Legal & Regulatory</a>
+                <a href="#" onclick="openBusinessProfile(); return false;" class="resource-btn">Business Profile</a>
+                <a href="#" onclick="openCapabilityStatement(); return false;" class="resource-btn">Capability Statement</a>
+                <a href="#" onclick="openTechnicalCapabilities(); return false;" class="resource-btn">Technical Capabilities</a>
+                <a href="#" onclick="openPortfolio(); return false;" class="resource-btn">Portfolio</a>
+                <a href="#" onclick="openLegalRegulatory(); return false;" class="resource-btn">Legal & Regulatory</a>
             </div>
         </div>
     </div>
 </div>
 
-<div id="capability-statement-modal" class="capability-statement-overlay">
+<div id="capability-statement-modal" class="capability-statement-overlay" onclick="if(event.target === this) closeCapabilityStatement()">
     <div class="capability-statement-window">
         <button class="close-btn" onclick="closeCapabilityStatement()">&times;</button>
         <h2>Capability Statement: Dragon Byte</h2>
@@ -218,7 +218,7 @@
     </div>
 </div>
 
-<div id="technical-capabilities-modal" class="technical-capabilities-overlay">
+<div id="technical-capabilities-modal" class="technical-capabilities-overlay" onclick="if(event.target === this) closeTechnicalCapabilities()">
     <div class="technical-capabilities-window">
         <button class="close-btn" onclick="closeTechnicalCapabilities()">&times;</button>
         <h2>Technical Capabilities: The Laravel Powerhouse</h2>
@@ -256,7 +256,7 @@
     </div>
 </div>
 
-<div id="portfolio-modal" class="portfolio-overlay">
+<div id="portfolio-modal" class="portfolio-overlay" onclick="if(event.target === this) closePortfolio()">
     <div class="portfolio-window">
         <button class="close-btn" onclick="closePortfolio()">&times;</button>
         <h2>Portfolio</h2>
@@ -268,7 +268,7 @@
     </div>
 </div>
 
-<div id="legal-regulatory-modal" class="legal-regulatory-overlay">
+<div id="legal-regulatory-modal" class="legal-regulatory-overlay" onclick="if(event.target === this) closeLegalRegulatory()">
     <div class="legal-regulatory-window">
         <button class="close-btn" onclick="closeLegalRegulatory()">&times;</button>
         <h2>Legal & Regulatory</h2>
@@ -290,7 +290,7 @@
     </div>
 </div>
 
-<div id="business-profile-modal" class="business-profile-overlay">
+<div id="business-profile-modal" class="business-profile-overlay" onclick="if(event.target === this) closeBusinessProfile()">
     <div class="business-profile-window">
         <button class="close-btn" onclick="closeBusinessProfile()">&times;</button>
         <h2>Business Profile: Dragon Byte </h2>
@@ -375,6 +375,14 @@
 </footer>
 
 <script src="script.min.js"></script>
+<style>
+.services-overlay.active, .about-overlay.active, .business-profile-overlay.active, 
+.capability-statement-overlay.active, .technical-capabilities-overlay.active, 
+.portfolio-overlay.active, .legal-regulatory-overlay.active {
+    display: flex !important;
+    opacity: 1 !important;
+}
+</style>
 <script>
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').then(() => {
@@ -382,13 +390,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Lazy load PDFs on modal open
-document.getElementById('legal-regulatory-modal').addEventListener('click', function(e) {
-    if (e.target === this && this.classList.contains(':target')) {
-        loadPDFs();
-    }
-});
-
+// Load PDFs when modal opens
 function loadPDFs() {
     const pdfViewers = document.querySelectorAll('.pdf-viewer[data-pdf]');
     pdfViewers.forEach(viewer => {
@@ -403,20 +405,9 @@ function loadPDFs() {
     });
 }
 
-// Load PDFs when modal is visible
-const legalModal = document.getElementById('legal-regulatory-modal');
-const observer = new MutationObserver(() => {
-    if (window.location.hash === '#legal-regulatory-modal') {
+document.getElementById('legal-regulatory-modal').addEventListener('click', function(e) {
+    if (e.target === this && this.classList.contains('active')) {
         loadPDFs();
-    }
-});
-
-observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
-
-// Also load on direct hash change
-window.addEventListener('hashchange', () => {
-    if (window.location.hash === '#legal-regulatory-modal') {
-        setTimeout(loadPDFs, 100);
     }
 });
 </script>
