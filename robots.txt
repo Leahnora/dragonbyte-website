@@ -1,0 +1,24 @@
+# Dragon Byte Website - Robot Rules
+# Allows search engines to crawl all content
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /admin/
+Disallow: /private/
+
+# Specific search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Crawl delay (in seconds)
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://dragonbyte.ltd/sitemap.xml
