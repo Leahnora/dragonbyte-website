@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asset Details - Asset Registry</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Alpine.js CDN -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet">
+</head>
+<body class="font-sans antialiased bg-gray-100">
+  <div class="min-h-screen">
+    <!-- Navigation -->
+    <div id="navigation"></div>
+
+    <!-- Page Header -->
+    <header class="bg-white shadow">
+      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center">
+          <a href="assets.html" class="mr-4 text-gray-600 hover:text-gray-900">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </a>
+          <h2 class="font-semibold text-xl text-gray-800 leading-tight">Asset Details</h2>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-12" x-data="assetDetailData()">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" x-show="asset">
+        <!-- Asset Header Card -->
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+          <div class="p-6">
+            <div class="flex justify-between items-start">
+              <div>
+                <h1 class="text-3xl font-bold text-gray-900" x-text="asset.name"></h1>
+                <p class="text-lg text-gray-600 mt-1" x-text="asset.asset_number"></p>
+              </div>
+              <span class="px-3 py-1 text-sm font-semibold rounded-full" :class="getStatusClass(asset.status)" x-text="getStatusLabel(asset.status)"></span>
+            </div>
+            
+            <div class="mt-4 flex flex-wrap gap-4 text-sm text-gray-600">
+              <div class="flex items-center">
+                <svg class="h-5 w-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span>Purchased: <strong x-text="formatDate(asset.purchase_date)"></strong></span>
+              </div>
+              <div class="flex items-center">
+                <svg class="h-5 w-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                </svg>
+                <span>Category: <strong x-text="asset.category"></strong></span>
+              </div>
+              <div class="flex items-center">
+                <svg class="h-5 w-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                <span>Division: <strong x-text="asset.division"></strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Main Details Column -->
+          <div class="lg:col-span-2 space-y-6">
+            <!-- Asset Information -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+              <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Asset Information</h3>
+                <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Asset Number</dt>
+                    <dd class="mt-1 text-sm text-gray-900" x-text="asset.asset_number"></dd>
+                  </div>
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Category</dt>
+                    <dd class="mt-1 text-sm text-gray-900" x-text="asset.category"></dd>
+                  </div>
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Division</dt>
+                    <dd class="mt-1 text-sm text-gray-900" x-text="asset.division"></dd>
+                  </div>
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Section</dt>
+                    <dd class="mt-1 text-sm text-gray-900" x-text="asset.section"></dd>
+                  </div>
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Assigned To</dt>
+                    <dd class="mt-1 text-sm text-gray-900" x-text="asset.assigned_to || 'Unassigned'"></dd>
+                  </div>
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Purchase Date</dt>
+                    <dd class="mt-1 text-sm text-gray-900" x-text="formatDate(asset.purchase_date)"></dd>
+                  </div>
+                  <div>
+                    <dt class="text-sm font-medium text-gray-500">Status</dt>
+                    <dd class="mt-1">
+                      <span class="px-2 py-1 text-xs font-semibold rounded-full" :class="getStatusClass(asset.status)" x-text="getStatusLabel(asset.status)"></span>
+                    </dd>
+                  </div>
+                  <div x-show="asset.last_maintenance">
+                    <dt class="text-sm font-medium text-gray-500">Last Maintenance</dt>
+                    <dd class="mt-1 text-sm text-gray-900" x-text="asset.last_maintenance ? formatDate(asset.last_maintenance) : 'N/A'"></dd>
+                  </div>
+                </dl>
+                
+                <div class="mt-4" x-show="asset.description">
+                  <dt class="text-sm font-medium text-gray-500">Description</dt>
+                  <dd class="mt-1 text-sm text-gray-900" x-text="asset.description"></dd>
+                </div>
+              </div>
+            </div>
+
+            <!-- Financial Information -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+              <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Financial Details</h3>
+                <div class="grid grid-cols-2 gap-4">
+                  <div class="bg-blue-50 p-4 rounded-lg">
+                    <div class="text-sm text-blue-600 font-medium">Purchase Cost</div>
+                    <div class="text-2xl font-bold text-blue-900 mt-1" x-text="formatCurrency(asset.purchase_cost)"></div>
+                  </div>
+                  <div class="bg-green-50 p-4 rounded-lg">
+                    <div class="text-sm text-green-600 font-medium">Current Value</div>
+                    <div class="text-2xl font-bold text-green-900 mt-1" x-text="formatCurrency(asset.current_value)"></div>
+                  </div>
+                </div>
+                <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+                  <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-600">Depreciation</span>
+                    <span class="text-lg font-semibold" :class="(asset.purchase_cost - asset.current_value) > 0 ? 'text-red-600' : 'text-green-600'" x-text="formatCurrency(asset.purchase_cost - asset.current_value)"></span>
+                  </div>
+                  <div class="mt-2 bg-gray-200 rounded-full h-2">
+                    <div class="bg-blue-600 h-2 rounded-full" :style="'width: ' + ((asset.current_value / asset.purchase_cost) * 100) + '%'"></div>
+                  </div>
+                  <div class="mt-1 text-xs text-gray-500 text-right" x-text="Math.round((asset.current_value / asset.purchase_cost) * 100) + '% of original value'"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Maintenance History -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg" x-show="maintenanceLogs.length > 0">
+              <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Maintenance History</h3>
+                <div class="space-y-4">
+                  <template x-for="log in maintenanceLogs" :key="log.id">
+                    <div class="border border-blue-500 border-opacity-30 p-4 rounded">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <div class="font-medium text-gray-900" x-text="log.description"></div>
+                          <div class="text-sm text-gray-600 mt-1">
+                            <span x-text="formatDate(log.date)"></span>
+                            <span class="mx-2">•</span>
+                            <span x-text="log.service_provider"></span>
+                          </div>
+                        </div>
+                        <div class="text-right">
+                          <div class="font-semibold text-gray-900" x-text="formatCurrency(log.cost)"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+                <div class="mt-4 pt-4 border-t">
+                  <a href="maintenance.html" class="text-blue-600 hover:underline text-sm">View all maintenance logs →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar Column -->
+          <div class="space-y-6">
+            <!-- Quick Actions -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+              <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                <div class="space-y-2">
+                  <button class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-sm font-medium transition" disabled>
+                    Edit Asset
+                  </button>
+                  <button class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 px-4 rounded text-sm font-medium transition" disabled>
+                    Log Maintenance
+                  </button>
+                  <button class="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded text-sm font-medium transition" disabled>
+                    Create Borrowing
+                  </button>
+                  <a href="assets.html" class="block w-full bg-gray-300 hover:bg-gray-400 text-gray-800 text-center py-2 px-4 rounded text-sm font-medium transition">
+                    Back to Assets
+                  </a>
+                </div>
+                <p class="mt-4 text-xs text-gray-500 text-center">
+                  <em>Actions disabled in demo mode</em>
+                </p>
+              </div>
+            </div>
+
+            <!-- Image Placeholder -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+              <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Asset Images</h3>
+                <div class="bg-gray-100 rounded-lg flex items-center justify-center h-48">
+                  <div class="text-center">
+                    <svg class="h-12 w-12 text-gray-400 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <p class="mt-2 text-sm text-gray-500">No images available</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Borrowing Status -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg" x-show="borrowingInfo">
+              <div class="p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Borrowing Status</h3>
+                <div x-show="borrowingInfo" class="bg-purple-50 p-4 rounded-lg">
+                  <div class="text-sm text-purple-800">
+                    <div class="font-semibold mb-2">Currently Borrowed</div>
+                    <div class="space-y-1">
+                      <div><strong>By:</strong> <span x-text="borrowingInfo?.borrowed_by"></span></div>
+                      <div><strong>Since:</strong> <span x-text="borrowingInfo ? formatDate(borrowingInfo.borrowed_date) : ''"></span></div>
+                      <div><strong>Due:</strong> <span x-text="borrowingInfo ? formatDate(borrowingInfo.expected_return_date) : ''"></span></div>
+                    </div>
+                  </div>
+                </div>
+                <div x-show="!borrowingInfo" class="text-sm text-gray-600 text-center py-4">
+                  Not currently borrowed
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Not Found Message -->
+      <div x-show="!asset" class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+          <div class="p-12 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Asset not found</h3>
+            <p class="mt-1 text-sm text-gray-500">The asset you're looking for doesn't exist.</p>
+            <div class="mt-6">
+              <a href="assets.html" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                Back to Assets
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/navigation.js"></script>
+  <script>
+    function assetDetailData() {
+      const demoData = JSON.parse(localStorage.getItem('demoData'));
+      const urlParams = new URLSearchParams(window.location.search);
+      const assetId = parseInt(urlParams.get('id'));
+      
+      const asset = demoData.assets.find(a => a.id === assetId);
+      const maintenanceLogs = demoData.maintenanceLogs.filter(log => log.asset_id === assetId);
+      const borrowingInfo = demoData.borrowings.find(b => b.asset_id === assetId && b.status === 'active');
+      
+      return {
+        asset: asset,
+        maintenanceLogs: maintenanceLogs,
+        borrowingInfo: borrowingInfo,
+        
+        formatCurrency(amount) {
+          return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+          }).format(amount);
+        },
+        
+        formatDate(dateString) {
+          return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          });
+        },
+        
+        getStatusClass(status) {
+          const classes = {
+            available: 'bg-green-100 text-green-800',
+            in_use: 'bg-blue-100 text-blue-800',
+            maintenance: 'bg-yellow-100 text-yellow-800',
+            damaged: 'bg-red-100 text-red-800',
+            retired: 'bg-gray-100 text-gray-800'
+          };
+          return classes[status] || 'bg-gray-100 text-gray-800';
+        },
+        
+        getStatusLabel(status) {
+          const labels = {
+            available: 'Available',
+            in_use: 'In Use',
+            maintenance: 'Maintenance',
+            damaged: 'Damaged',
+            retired: 'Retired'
+          };
+          return labels[status] || status;
+        }
+      };
+    }
+  </script>
+</body>
+</html>
