@@ -287,10 +287,15 @@ const DemoData = {
 // Helper Functions
 const Utils = {
   formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', {
+    // Format using PGK currency
+    const formatted = new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD'
+      currency: 'PGK',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
     }).format(amount);
+    // Replace PGK with K for simplicity
+    return formatted.replace('PGK', 'K');
   },
 
   formatDate(dateString) {

@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Asset Registry</title>
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
   <!-- Alpine.js CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   
@@ -255,10 +252,13 @@
         recentAssets: demoData.assets.slice(0, 5),
         
         formatCurrency(amount) {
-          return new Intl.NumberFormat('en-US', {
+          const formatted = new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'USD'
+            currency: 'PGK',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
           }).format(amount);
+          return formatted.replace('PGK', 'K');
         },
         
         formatDate(dateString) {
