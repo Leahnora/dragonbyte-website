@@ -7,10 +7,10 @@
   --primary-color: #2A2BE2; /* Deep Indigo */
   --primary-dark: #1F6FEB; /* Royal Blue */
   --secondary-color: #1F2A7A; /* Button Deep Blue */
-  --accent-color: #22C55E; /* Fresh Green */
-  --accent-bright: #18A7B5; /* Teal Blue */
-  --green-color: #22C55E;
-  --success-color: #22C55E;
+  --accent-color: #0432ca; /* Theme yellow */
+  --accent-bright: #FFE7A8; /* lighter yellow */
+  --green-color: #ff0000; /* migrate greens to yellow for theme */
+  --success-color: #FFD966;
   --error-color: #ff4444;
   --warning-color: #ffaa00;
 
@@ -24,7 +24,7 @@
   /* Text Colors */
   --text-primary: #1E293B; /* dark slate */
   --text-secondary: #475569;
-  --text-tertiary: #64748B;
+  --text-tertiary: #70648b;
   --text-muted: #64748B;
   --text-dark: #1E293B;
 
@@ -38,9 +38,22 @@
   --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.08);
 
   /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #2A2BE2 0%, #1F6FEB 33%, #18A7B5 66%, #22C55E 100%);
+  --gradient-primary: linear-gradient(135deg, #001F5F 0%, #0b3385 33%,  #66ff94 100%);
   --gradient-dark: linear-gradient(135deg, #2A2BE2 0%, #1F2A7A 100%);
-  --gradient-accent: linear-gradient(90deg, #2A2BE2 0%, #22C55E 100%);
+  --gradient-accent: linear-gradient(90deg, #2A2BE2 0%, #73ff66 100%);
+
+  /* Button-specific gradient options */
+  --btn-grad-startyellow: linear-gradient(135deg, #041f57 0%, #0e40a3 0%, #ee704a 100%); /* Start a Project */
+  --btn-grad-blue: linear-gradient(135deg, #2A2BE2 0%, #1F6FEB 100%);
+  --btn-grad-green: linear-gradient(135deg, #18A7B5 0%, #668aff 100%);
+  --btn-grad-teal: linear-gradient(135deg, #18A7B5 0%, #1F6FEB 100%);
+
+  /* About section H3 blue (lighter, professional) */
+  --about-h3-blue: #4B70F0;
+
+  /* Step number solid color (base and lighter variant) */
+  --step-number-bg: #001F5F;
+  --step-number-bg-light: #12315a;
 
   /* UI accent colors */
   --button-primary: #1F2A7A;
@@ -211,9 +224,9 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 20% 50%, rgba(42, 43, 226, 0.08) 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, rgba(19, 25, 104, 0.06) 0%, transparent 50%),
-              radial-gradient(circle at 100% 10%, rgba(0, 217, 102, 0.03) 0%, transparent 50%);
+  background: radial-gradient(circle at 20% 50%, rgba(230, 230, 241, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(217, 218, 223, 0.06) 0%, transparent 50%),
+              radial-gradient(circle at 100% 10%, rgba(255, 217, 102, 0.03) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
 }
@@ -300,15 +313,53 @@ a:hover {
 }
 
 .btn-primary {
-  background: var(--gradient-primary);
+  /* Default primary button uses Start→Yellow gradient; override with utility classes */
+  background: var(--btn-grad-startyellow);
   color: white;
-  border-color: transparent;
-  box-shadow: 0 4px 16px rgba(42, 43, 226, 0.25);
+
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(42, 43, 226, 0.35);
+  box-shadow: 0 8px 24px rgba(16, 24, 64, 0.22);
+}
+
+/* Ensure utility gradient buttons have no visible border or outline by default */
+.btn-blue,
+.btn-green,
+.btn-teal,
+.btn-yellow {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Primary button: subtle 1px grey border to match design */
+.btn-primary {
+  border: 1px solid var(--border-light) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn-primary:focus,
+.btn-primary:active {
+  border: 1px solid var(--border-light) !important;
+  outline: none !important;
+  box-shadow: 0 8px 24px rgba(16, 24, 64, 0.18);
+}
+
+/* Utility classes for button gradients */
+.btn-blue {
+  background: var(--btn-grad-blue) !important;
+}
+.btn-green {
+  background: var(--btn-grad-green) !important;
+}
+.btn-teal {
+  background: var(--btn-grad-teal) !important;
+}
+.btn-yellow {
+  background: var(--btn-grad-startyellow) !important;
 }
 
 .btn-primary:active {
@@ -348,7 +399,7 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10, 10, 20, 0.8);
+  background: rgba(255, 255, 255, 0.582);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border-light);
   padding: var(--space-md) 0;
@@ -801,7 +852,7 @@ section.in-view > * {
 
 .service-card {
   padding: var(--space-xl);
-  background: linear-gradient(135deg, rgba(42, 43, 226, 0.05) 0%, rgba(34, 197, 94, 0.02) 100%);
+  background: linear-gradient(135deg, rgba(42, 43, 226, 0.05) 0%, rgba(255, 217, 102, 0.02) 100%);
   border: 1px solid var(--border-light);
   border-radius: 12px;
   transition: all var(--transition-base);
@@ -816,7 +867,7 @@ section.in-view > * {
 .service-card:nth-child(6) { animation-delay: 0.5s; }
 
 .service-card:hover {
-  background: linear-gradient(135deg, rgba(42, 43, 226, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(42, 43, 226, 0.1) 0%, rgba(255, 217, 102, 0.05) 100%);
   border-color: var(--primary-color);
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
@@ -899,7 +950,7 @@ section.in-view > * {
    ======================================== */
 
 .case-study {
-  background: linear-gradient(135deg, rgba(42, 43, 226, 0.05) 0%, rgba(34, 197, 94, 0.03) 100%);
+  background: linear-gradient(135deg, rgba(42, 43, 226, 0.05) 0%, rgba(255, 217, 102, 0.03) 100%);
   border: 1px solid var(--border-light);
   border-radius: 16px;
   overflow: hidden;
@@ -915,7 +966,7 @@ section.in-view > * {
 .case-study-status {
   display: inline-block;
   padding: 6px 12px;
-  background: rgba(0, 217, 102, 0.2);
+  background: rgb(35, 36, 104);
   border: 1px solid var(--green-color);
   color: var(--green-color);
   border-radius: 6px;
@@ -1042,12 +1093,12 @@ section.in-view > * {
   width: 60px;
   height: 60px;
   margin: 0 auto var(--space-lg);
-  background: var(--gradient-primary);
+  background: var(--step-number-bg-light);
   border-radius: 50%;
   font-size: var(--font-size-2xl);
   font-weight: 700;
   color: white;
-  box-shadow: 0 4px 16px rgba(42, 43, 226, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 31, 95, 0.18);
 }
 
 .process-step h3 {
@@ -1101,7 +1152,7 @@ section.in-view > * {
 .about-block h3 {
   font-size: var(--font-size-xl);
   margin-bottom: var(--space-md);
-  color: var(--accent-color);
+  color: var(--about-h3-blue);
 }
 
 .about-block p {
@@ -1407,7 +1458,7 @@ section.in-view > * {
   justify-content: center;
   width: 64px;
   height: 64px;
-  background: rgba(0, 217, 102, 0.2);
+  background: rgba(255, 217, 102, 0.2);
   border: 2px solid var(--green-color);
   border-radius: 50%;
   font-size: 32px;
