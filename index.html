@@ -80,11 +80,11 @@
             <span>DRAGON BYTE</span>
         </a>
         <nav class="navbar-nav">
-            <a href="#solutions" class="nav-link">Solutions</a>
-            <a href="#capabilities" class="nav-link">Capabilities</a>
-            <a href="#featured-project" class="nav-link">Work</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#contact" class="nav-link">Contact</a>
+            <a href="#solutions" class="nav-link" @click.prevent="scrollTo('#solutions')">Solutions</a>
+            <a href="#capabilities" class="nav-link" @click.prevent="scrollTo('#capabilities')">Capabilities</a>
+            <a href="#featured-project" class="nav-link" @click.prevent="scrollTo('#featured-project')">Work</a>
+            <a href="#about" class="nav-link" @click.prevent="scrollTo('#about')">About</a>
+            <a href="#contact" class="nav-link" @click.prevent="scrollTo('#contact')">Contact</a>
         </nav>
         <button class="mobile-menu-toggle" @click="mobileMenuOpen = !mobileMenuOpen">
             <span></span>
@@ -92,11 +92,11 @@
             <span></span>
         </button>
         <nav class="mobile-nav" :class="{ 'active': mobileMenuOpen }">
-            <a href="#solutions" class="mobile-nav-link" @click="mobileMenuOpen = false">Solutions</a>
-            <a href="#capabilities" class="mobile-nav-link" @click="mobileMenuOpen = false">Capabilities</a>
-            <a href="#featured-project" class="mobile-nav-link" @click="mobileMenuOpen = false">Work</a>
-            <a href="#about" class="mobile-nav-link" @click="mobileMenuOpen = false">About</a>
-            <a href="#contact" class="mobile-nav-link" @click="mobileMenuOpen = false">Contact</a>
+            <a href="#solutions" class="mobile-nav-link" @click.prevent="mobileMenuOpen = false; scrollTo('#solutions')">Solutions</a>
+            <a href="#capabilities" class="mobile-nav-link" @click.prevent="mobileMenuOpen = false; scrollTo('#capabilities')">Capabilities</a>
+            <a href="#featured-project" class="mobile-nav-link" @click.prevent="mobileMenuOpen = false; scrollTo('#featured-project')">Work</a>
+            <a href="#about" class="mobile-nav-link" @click.prevent="mobileMenuOpen = false; scrollTo('#about')">About</a>
+            <a href="#contact" class="mobile-nav-link" @click.prevent="mobileMenuOpen = false; scrollTo('#contact')">Contact</a>
         </nav>
     </div>
 </header>
@@ -114,8 +114,8 @@
         <h1 class="hero-headline">Secure, scalable digital systems for modern organizations.</h1>
         <p class="hero-subheadline">Dragon Byte helps organizations across Papua New Guinea design, build, and secure the systems that power digital transformation.</p>
         <div class="hero-ctas">
-            <button class="btn btn-primary" @click="openModal('contact-form')">Start a Project</button>
-            <a href="#featured-project" class="btn btn-secondary">View Our Work</a>
+            <a href="mailto:info@dragonbyte.ltd" class="btn btn-primary">Start a Project</a>
+            <a href="#featured-project" class="btn btn-secondary" @click.prevent="scrollTo('#featured-project')">View Our Work</a>
         </div>
     </div>
 </section>
@@ -422,8 +422,8 @@
             <h2>Ready to build something secure and scalable?</h2>
             <p>Let's discuss how Dragon Byte can help your organization thrive in the digital age.</p>
             <div class="cta-buttons">
-                <button class="btn btn-primary btn-large" @click="openModal('contact-form')">Start a Project</button>
-                <a href="#contact" class="btn btn-secondary btn-large">Get in Touch</a>
+                <a href="mailto:info@dragonbyte.ltd" class="btn btn-primary btn-large">Start a Project</a>
+                <a href="#contact" class="btn btn-secondary btn-large" @click.prevent="scrollTo('#contact')">Get in Touch</a>
             </div>
         </div>
     </div>
@@ -501,9 +501,9 @@
             <div class="footer-section">
                 <h4>Resources</h4>
                 <ul>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#featured-project">Our Work</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#about" @click.prevent="scrollTo('#about')">About Us</a></li>
+                    <li><a href="#featured-project" @click.prevent="scrollTo('#featured-project')">Our Work</a></li>
+                    <li><a href="#contact" @click.prevent="scrollTo('#contact')">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -583,48 +583,50 @@ document.addEventListener('alpine:init', () => {
                 this.form.isSubmitting = false;
             }
         }
+        ,
+        scrollTo(href) {
+            try {
+                if (!href) return;
+                const target = document.querySelector(href);
+                if (!target) return;
+                const offsetTop = target.offsetTop - 100;
+                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+            } catch (e) {
+                console.warn('scrollTo failed', e);
+            }
+        }
+        ,
+        init() {
+            // Set up IntersectionObserver for element-level animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.card, .service-card, .challenge-card, .process-step, .capability-item, .founder-card, .service-icon').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Respect user's motion preferences
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.documentElement.style.setProperty('--animation-duration', '0.01ms');
+            }
+        }
     }));
 });
 
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        const href = this.getAttribute('href');
-        if (href !== '#' && document.querySelector(href)) {
-            e.preventDefault();
-            const target = document.querySelector(href);
-            const offsetTop = target.offsetTop - 100;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
+// Navigation scrolling handled via Alpine `scrollTo()` on anchors.
 
-// Intersection Observer for scroll animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('in-view');
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('section, .card, .service-card, .challenge-card, .process-step, .capability-item').forEach(el => {
-    observer.observe(el);
-});
-
-// Respect user's motion preferences
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.documentElement.style.setProperty('--animation-duration', '0.01ms');
-}
+// IntersectionObserver and motion-preference handling moved into Alpine's `init()`
 </script>
 </body>
 </html>

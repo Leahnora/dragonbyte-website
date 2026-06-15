@@ -29,7 +29,7 @@
   --text-dark: #1E293B;
 
   /* Borders & Shadows */
-  --border-light: #D9E0E9; /* subtle divider grey */
+  --border-light: #006eff50; /* subtle divider grey */
   --border-medium: rgba(25, 40, 80, 0.08);
   --border-strong: rgba(25, 40, 80, 0.12);
   --shadow-sm: 0 4px 12px rgba(31, 42, 122, 0.06);
