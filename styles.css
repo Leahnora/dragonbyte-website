@@ -1561,7 +1561,17 @@ section.in-view > * {
    SCROLL ANIMATIONS
    ======================================== */
 
+/* Hide sections by default so scroll reveal doesn't flash them
+   visible before the IntersectionObserver triggers. */
+section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
 section.in-view {
+  opacity: 1;
+  transform: translateY(0);
   animation: fadeInUp 0.6s ease-out;
 }
 
