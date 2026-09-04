@@ -13,6 +13,7 @@
     ExpiresByType image/jpeg "access plus 1 year"
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
     ExpiresByType image/svg+xml "access plus 1 year"
     
     # CSS and JavaScript
@@ -33,7 +34,7 @@
     FileETag None
     
     # Add cache control headers
-    <FilesMatch "\.(jpg|jpeg|png|gif|ico|svg)$">
+    <FilesMatch "\.(jpg|jpeg|png|gif|webp|ico|svg)$">
         Header set Cache-Control "max-age=31536000, public"
     </FilesMatch>
     <FilesMatch "\.(css|js)$">
@@ -65,8 +66,8 @@
 </IfModule>
 
 # Allow access to static files
-<FilesMatch "\.(html|htm|css|js|jpg|jpeg|png|gif|svg|woff|woff2|ttf|otf|ico)$">
-    Header set Cache-Control "public, max-age=3600"
+<FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
 </FilesMatch>
 
 # Disable directory listing
