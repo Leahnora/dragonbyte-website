@@ -46,6 +46,12 @@ h1 em { color: var(--red); font-style: normal; }
 .button-red:hover, .button-red:focus-visible { background: var(--ink); }
 .text-link { display: inline-flex; align-items: center; gap: 14px; color: var(--ink); font-size: 14px; font-weight: 700; border-bottom: 1px solid var(--ink); padding-bottom: 5px; transition: color .2s ease, border-color .2s ease; }
 .text-link:hover, .text-link:focus-visible { color: var(--red); border-color: var(--red); }
+a > span[aria-hidden="true"] { display: inline-block; width: 14px; height: 14px; margin-left: 8px; overflow: hidden; color: transparent; font-size: 0; line-height: 0; background: url("icons/arrow.svg") center / contain no-repeat; }
+.service-list a > span { display: inline-block; width: 14px; height: 14px; margin-left: 8px; overflow: hidden; color: transparent; font-size: 0; line-height: 0; background: url("icons/arrow.svg") center / contain no-repeat; }
+.hero-actions .text-link > span { filter: brightness(0) saturate(100%); }
+.about-grid .text-link > span { filter: brightness(0) saturate(100%); }
+.service-list a > span { filter: brightness(0) saturate(100%) invert(12%) sepia(99%) saturate(7271%) hue-rotate(3deg) brightness(89%) contrast(125%); }
+.button > span, .nav-cta > span, .work-copy .text-link > span, .contact-section .button > span, .footer-social a > span { filter: none; }
 
 .news-feature { position: relative; min-height: 480px; overflow: hidden; color: var(--paper); background: var(--ink); box-shadow: 22px 22px 0 var(--blue); }
 .news-track, .news-slide { min-height: 480px; }
@@ -88,7 +94,7 @@ h1 em { color: var(--red); font-style: normal; }
 .service-list li { padding: 6px 0 6px 16px; border-top: 1px solid var(--line); }
 .service-list li::before { content: '+'; display: inline-block; width: 16px; margin-left: -16px; color: var(--red); font-weight: 700; }
 .service-list a { margin-top: auto; color: var(--red); font-size: 13px; font-weight: 700; }
-.service-list a span, .text-link span { margin-left: 8px; font-size: 17px; }
+.service-list a span, .text-link span { font-size: 17px; }
 
 .work-section { padding: 110px 0 130px; color: var(--paper); background: var(--charcoal); }
 .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(50px, 10vw, 145px); align-items: center; }
